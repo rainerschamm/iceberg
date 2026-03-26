@@ -271,6 +271,16 @@ public class TestSchemaUtils {
   }
 
   @Test
+  public void testToIcebergTypeLogicalTimestampWithoutZone() {
+    IcebergSinkConfig config = mock(IcebergSinkConfig.class);
+    when(config.schemaLogicalTimestampWithoutZone()).thenReturn(true);
+
+    Type timestampType = SchemaUtils.toIcebergType(Timestamp.SCHEMA, config);
+    assertThat(timestampType).isInstanceOf(TimestampType.class);
+    assertThat(((TimestampType) timestampType).shouldAdjustToUTC()).isFalse();
+  }
+
+  @Test
   public void testInferIcebergType() {
     IcebergSinkConfig config = mock(IcebergSinkConfig.class);
 

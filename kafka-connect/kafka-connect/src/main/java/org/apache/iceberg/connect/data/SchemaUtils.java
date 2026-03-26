@@ -249,7 +249,11 @@ class SchemaUtils {
           return IntegerType.get();
         case INT64:
           if (Timestamp.LOGICAL_NAME.equals(valueSchema.name())) {
-            return TimestampType.withZone();
+            if (config.schemaLogicalTimestampWithoutZone()) {
+              return TimestampType.withoutZone();
+            } else {
+              return TimestampType.withZone();
+            }
           }
           return LongType.get();
         case FLOAT32:
